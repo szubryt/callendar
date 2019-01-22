@@ -9,6 +9,7 @@
     "bundle-android": "react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --sourcemap-output android/app/src/main/assets/index.android.map --assets-dest android/app/src/main/res/"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "react": "16.6.3",
     "react-native": "0.57.8",
     "react-native-calendars": "^1.21.0",

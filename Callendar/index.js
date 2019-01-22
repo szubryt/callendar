@@ -1,14 +1,16 @@
 import React from 'react';
-import { AppRegistry, ScrollView } from 'react-native';
+import { AppRegistry, ScrollView, Alert } from 'react-native';
 import Header from './src/components/header';
 import Button from './src/components/Button';
 import DatePicker from './src/components/DatePicker';
+import List from './src/components/List';
 
 const App = () => (
     <ScrollView style={{ flex: 1 }}>
-        <Header />
+        <Header headerText={'My Calendar'} />
         <DatePicker />
-        <Button />
+        <Button buttonText={'Search'} buttonAction={() => Alert.alert('TO DO')} />
+        <List />
     </ScrollView>
 );
 

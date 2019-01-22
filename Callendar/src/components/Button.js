@@ -1,18 +1,16 @@
 import React from 'react';
-import { Text, TouchableOpacity, Alert } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
-const Button = () => {
+const Button = (props) => {
 const { bStyle } = styles;
 const { tStyle } = styles;
 
     return (
         <TouchableOpacity 
             style={bStyle}
-            onPress={() => {
-            Alert.alert('TO DO');
-            }} 
+            onPress={props.buttonAction} 
         >
-            <Text style={tStyle}>Search my notes</Text>
+            <Text style={tStyle}>{props.buttonText}</Text>
         </TouchableOpacity>
     );
 };

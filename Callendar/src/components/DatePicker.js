@@ -4,8 +4,8 @@ import { View } from 'react-native';
 
 const DatePicker = () => (
         <View>
-        <Calendar />
-                </View>
+                <Calendar />
+        </View>
     );
     
 
