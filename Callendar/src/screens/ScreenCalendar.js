@@ -12,4 +12,3 @@ const ScreenCalendar = () => (
 );
 
 export default ScreenCalendar;
-//AppRegistry.registerComponent('Callendar', () => App);

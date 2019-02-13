@@ -12,9 +12,9 @@ class List extends Component {
     }
 
     renderNotes() {
-        return this.state.notes.map(note => 
-            <Note key={note.name} note={note} />
-        );
+        return this.state.notes.map(note => {
+            return <Note key={note.name} note={note} />;
+        });
     }
 
     render() {
