@@ -5,10 +5,10 @@ import Button from '../components/Button';
 import DatePicker from '../components/DatePicker';
 
 const ScreenCalendar = () => (
-    <ScrollView style={{ flex: 1 }}>
-        <DatePicker />
-        <Button buttonText={'Search'} buttonAction={() => Actions.search()} />
-    </ScrollView>
+  <ScrollView style={{ flex: 1 }}>
+    <DatePicker />
+    <Button buttonText={'Search'} buttonAction={() => Actions.search()} />
+  </ScrollView>
 );
 
 export default ScreenCalendar;
