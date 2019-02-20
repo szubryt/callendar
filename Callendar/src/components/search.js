@@ -17,7 +17,7 @@ class Search extends Component {
         onChangeText={text => {
           this.props.changeText(text);
         }}
-        placeholder={'Search:'}
+        placeholder={'Type here'}
       />
     );
   }

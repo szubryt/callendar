@@ -11,16 +11,21 @@
   "dependencies": {
     "axios": "^0.18.0",
     "react": "16.6.3",
-    "react-native": "0.57.8",
+    "react-native": "^0.58.5",
     "react-native-calendars": "^1.21.0",
+    "react-native-gesture-handler": "^1.0.15",
     "react-native-router-flux": "^4.0.6",
-    "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
+    "babel-core": "^6.26.3",
     "babel-jest": "23.6.0",
+    "babel-loader": "^8.0.5",
     "eslint-config-rallycoding": "^3.2.0",
+    "gulp-babel": "^8.0.0",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "16.6.3"
