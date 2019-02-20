@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { TextInput } from 'react-native';
 
 class Search extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { text: '' };
-  }
 
   render() {
     const { searchStyle } = styles;
@@ -17,7 +13,7 @@ class Search extends Component {
         onChangeText={text => {
           this.props.changeText(text);
         }}
-        placeholder={'Type here'}
+        placeholder={'Search:'}
       />
     );
   }

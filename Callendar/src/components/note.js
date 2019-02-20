@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { Text, TouchableOpacity } from 'react-native';
 
 const Note = props => {
   const { textStyle } = styles;
   const { containerStyle } = styles;
   return (
-    <View style={containerStyle}>
-      <Text style={textStyle}>{props.note.name}</Text>
-    </View>
+      <TouchableOpacity style={containerStyle} onPress={() => Actions.editor()}>
+        <Text style={textStyle}>{props.note.name}</Text>
+      </TouchableOpacity>
   );
 };
 
