@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import { Text, TouchableOpacity } from 'react-native';
 
-const Note = props => {
-  const { textStyle } = styles;
-  const { containerStyle } = styles;
-  return (
-      <TouchableOpacity style={containerStyle} onPress={() => Actions.editor()}>
-        <Text style={textStyle}>{props.note.name}</Text>
+class Note extends Component {
+  render() {
+    const { textStyle } = styles;
+    const { containerStyle } = styles;
+
+    return (
+      <TouchableOpacity
+        style={containerStyle}
+        onPress={() => Actions.editor({ title: this.props.title })}
+      >
+        <Text style={textStyle}>{this.props.note.name}</Text>
+        {console.log('key: ', this.props.title)}
       </TouchableOpacity>
-  );
-};
+    );
+  }
+}
 
 const styles = {
   textStyle: {

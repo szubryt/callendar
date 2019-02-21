@@ -10,7 +10,7 @@ class Editor extends Component {
       <View>
         <Text style={textStyle} >Name</Text>
         <TextInput 
-        placeholder={this.props.text} 
+        placeholder={this.props.title} 
         style={containerStyle}
         />
         <Text style={textStyle} >Description</Text>

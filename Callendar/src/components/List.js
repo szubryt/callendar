@@ -19,7 +19,7 @@ class List extends Component {
       let noteName = note.name;
       noteName = noteName.toLowerCase();
       if (noteName.includes(sample)) {
-        return <Note key={note.name} note={note} />;
+        return <Note key={note.name} note={note} title={note.name} />;
       }
       return null;
     });
