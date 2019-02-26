@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Calendar } from 'react-native-calendars';
 import { View } from 'react-native';
 
-const DatePicker = () => (
-        <View>
+class DatePicker extends Component {
+  render() {
+    return (
+      <View>
         <Calendar />
-                </View>
+      </View>
     );
-    
+  }
+}
 
 export default DatePicker;
