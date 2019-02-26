@@ -6,11 +6,11 @@ import Note from './Note';
 
 class List extends Component {
   state = { notes: [] };
-
-  componentWillMount() {
+    componentWillMount() {
     axios
-      .get('https://swapi.co/api/people/?format=json')
-      .then(response => this.setState({ notes: response.data.results }));
+      .get('http://localhost:8081/people.json')
+      .then(response => 
+        this.setState({ notes: response.data.results }));
   }
 
   renderNotes(value) {
@@ -19,15 +19,26 @@ class List extends Component {
       let noteName = note.name;
       noteName = noteName.toLowerCase();
       if (noteName.includes(sample)) {
-        return <Note key={note.name} note={note} title={note.name} />;
+        //console.log(this.state.notes.indexOf(note));
+        return (
+          <Note
+            noteID={this.state.notes.indexOf(note)}
+            key={note.name}
+            note={note}
+            title={note.name}
+            eDate={note.edited}
+            eHeight={note.height}
+            eEyeColor={note.eye_color}
+
+          />     
+          );    
       }
       return null;
     });
   }
 
   render() {
-    console.log(this.state);
-
+    //console.log('state.notes: ', this.state.notes);
     return <View>{this.renderNotes(this.props.text)}</View>;
   }
 }

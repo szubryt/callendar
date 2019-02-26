@@ -10,10 +10,18 @@ class Note extends Component {
     return (
       <TouchableOpacity
         style={containerStyle}
-        onPress={() => Actions.editor({ title: this.props.title })}
+        onPress={() =>
+          Actions.editor({
+            title: this.props.title,
+            eDate: this.props.eDate,
+            eHeight: this.props.eHeight,
+            eEyeColor: this.props.eEyeColor,
+            eNote: this.props.note,
+            eID: this.props.noteID
+          })
+        }
       >
         <Text style={textStyle}>{this.props.note.name}</Text>
-        {console.log('key: ', this.props.title)}
       </TouchableOpacity>
     );
   }
