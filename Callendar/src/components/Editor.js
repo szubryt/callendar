@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TextInput, View, Text } from 'react-native';
+import axios from 'axios';
 import Button from './Button';
 
 class Editor extends Component {
@@ -13,6 +14,31 @@ class Editor extends Component {
       eDescription: ''
     };
   }
+
+  saveData() {
+    console.log('-----------------------------------------------');
+      axios
+      .patch('https://logowaniegfp.firebaseio.com/results/' + this.props.eID + '.json', {
+        name: this.state.eName,
+        height: this.state.eHeight,
+        eye_color: this.state.eEyeColor,
+        edited: this.state.eDate
+      })
+      .then(response => console.log('POST response: ', response))
+      .catch(error => {
+        if (error.response) {
+          console.log('R Data: ', error.response.data);
+          console.log('R Status: ', error.response.status);
+          console.log('R Headers: ', error.response.headers);
+        } else if (error.request) {
+          console.log('R request: ', error.request);
+        } else {
+          console.log('Error message: ', error.message);
+        }
+        console.log(error.config);
+      });
+    }
+
 
   render() {
     const { containerStyle } = styles;
@@ -44,7 +70,8 @@ class Editor extends Component {
           onChangeText={eEyeColor => this.setState({ eEyeColor })}
         />
         <Button 
-        buttonText={'Save'} 
+        buttonText={'Save'}
+        onPress={this.saveData()}
         />
       </View>
     );
