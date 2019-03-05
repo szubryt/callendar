@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, View, Text } from 'react-native';
+import { TextInput, View, Text, Alert } from 'react-native';
 import axios from 'axios';
 import Button from './Button';
 
@@ -8,14 +8,14 @@ class Editor extends Component {
     super(props);
     this.state = {
       eName: this.props.title,
-      eDate: '',
-      eHeight: '',
-      eEyeColor: '',
+      eDate: this.props.eDate,
+      eHeight: this.props.eHeight,
+      eEyeColor: this.props.eEyeColor,
       eDescription: ''
     };
   }
 
-  saveData() {
+  saveData = () => {
     console.log('-----------------------------------------------');
       axios
       .patch('https://logowaniegfp.firebaseio.com/results/' + this.props.eID + '.json', {
@@ -24,7 +24,10 @@ class Editor extends Component {
         eye_color: this.state.eEyeColor,
         edited: this.state.eDate
       })
-      .then(response => console.log('POST response: ', response))
+      .then(response => {
+        console.log('POST response: ', response);
+        Alert.alert('I am Saved');
+      })
       .catch(error => {
         if (error.response) {
           console.log('R Data: ', error.response.data);
@@ -71,7 +74,7 @@ class Editor extends Component {
         />
         <Button 
         buttonText={'Save'}
-        onPress={this.saveData()}
+        buttonAction={() => this.saveData()}
         />
       </View>
     );

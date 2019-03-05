@@ -61,12 +61,6 @@ class List extends Component {
     return (
       <View>
     {this.renderNotes(this.props.text)}
-    <Button 
-    title='simple'   
-    onPress={() => {
-      this.renderNotes(this.props.text);
-    }} 
-    />
     </View>
     );
   }
