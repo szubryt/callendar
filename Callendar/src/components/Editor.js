@@ -43,7 +43,9 @@ class Editor extends Component {
           style={containerStyle}
           onChangeText={eEyeColor => this.setState({ eEyeColor })}
         />
-        <Button buttonText={'Save'} />
+        <Button 
+        buttonText={'Save'} 
+        />
       </View>
     );
   }
