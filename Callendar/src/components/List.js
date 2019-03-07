@@ -8,11 +8,6 @@ import Note from './Note';
 class List extends Component {
   state = { 
     notes: [],
-    // patchName: '',
-    // patchDate: '',
-    // patchHeight: '',
-    // patchEyeColor: '',
-    // patchID: '5'
   };
 
     componentWillMount() {

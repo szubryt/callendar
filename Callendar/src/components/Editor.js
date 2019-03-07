@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, View, Text, Alert } from 'react-native';
+import { TextInput, View, Text, Alert, DatePickerAndroid } from 'react-native';
 import axios from 'axios';
 import Button from './Button';
 
@@ -11,22 +11,30 @@ class Editor extends Component {
       eDate: this.props.eDate,
       eHeight: this.props.eHeight,
       eEyeColor: this.props.eEyeColor,
-      eDescription: ''
+      eDescription: '',
+      setMonth: '',
+      setDay: '',
+      setYear: ''
     };
   }
 
   saveData = () => {
     console.log('-----------------------------------------------');
-      axios
-      .patch('https://logowaniegfp.firebaseio.com/results/' + this.props.eID + '.json', {
-        name: this.state.eName,
-        height: this.state.eHeight,
-        eye_color: this.state.eEyeColor,
-        edited: this.state.eDate
-      })
+    axios
+      .patch(
+        'https://logowaniegfp.firebaseio.com/results/' +
+          this.props.eID +
+          '.json',
+        {
+          name: this.state.eName,
+          height: this.state.eHeight,
+          eye_color: this.state.eEyeColor,
+          edited: this.state.eDate
+        }
+      )
       .then(response => {
         console.log('POST response: ', response);
-        Alert.alert('I am Saved');
+        Alert.alert('Changes succesfuly saved');
       })
       .catch(error => {
         if (error.response) {
@@ -40,8 +48,11 @@ class Editor extends Component {
         }
         console.log(error.config);
       });
-    }
+  };
 
+  addZero(n) {
+    return (n < 10 ? '0' : '') + n;
+  }
 
   render() {
     const { containerStyle } = styles;
@@ -50,13 +61,35 @@ class Editor extends Component {
       <View>
         <Text style={textStyle}>{this.props.eID}. Name</Text>
         <TextInput
-          placeholder={this.props.title}
           style={containerStyle}
-          onChangeText={eName => this.setState({ eName })}
+          onChangeText={(eName) => this.setState({ eName })}
+          value={this.state.eName}
+
         />
         <Text style={textStyle}>Date</Text>
-        <TextInput
-          placeholder={this.props.eDate}
+        <Button
+          style={{ color: 'blue' }}
+          buttonAction={async () => {
+            try {
+              let { action, year, month, day } = await DatePickerAndroid.open({
+                mode: 'calendar',
+                date: new Date()
+              });
+              if (action !== DatePickerAndroid.dismissedAction) {
+                month = this.addZero(month + 1);
+                day = this.addZero(day);
+                this.setState({
+                  setMonth: month.toString(),
+                  setDay: day.toString(),
+                  setYear: year.toString(),
+                  eDate: year + '-' + month + '-' + day
+                });
+              }
+            } catch ({ code, message }) {
+              console.warn('Cannot open date picker', message);
+            }
+          }}
+          buttonText={this.state.eDate}
           style={containerStyle}
           onChangeText={eDate => this.setState({ eDate })}
         />
@@ -65,6 +98,7 @@ class Editor extends Component {
           placeholder={this.props.eHeight}
           style={containerStyle}
           onChangeText={eHeight => this.setState({ eHeight })}
+          keyboardType={'number-pad'}
         />
         <Text style={textStyle}>Eye color</Text>
         <TextInput
@@ -72,9 +106,14 @@ class Editor extends Component {
           style={containerStyle}
           onChangeText={eEyeColor => this.setState({ eEyeColor })}
         />
-        <Button 
-        buttonText={'Save'}
-        buttonAction={() => this.saveData()}
+        <Button
+          buttonText={'Save'}
+          buttonAction={() => {
+            this.saveData();
+            console.log('day: ', this.state.setDay);
+            console.log('month: ', this.state.setMonth);
+            console.log('year: ', this.state.setYear);
+          }}
         />
       </View>
     );
