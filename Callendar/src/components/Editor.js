@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TextInput, View, Text, Alert, DatePickerAndroid } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import Button from './Button';
 
@@ -22,9 +23,7 @@ class Editor extends Component {
     console.log('-----------------------------------------------');
     axios
       .patch(
-        'https://logowaniegfp.firebaseio.com/results/' +
-          this.props.eID +
-          '.json',
+        `https://logowaniegfp.firebaseio.com/results/${this.props.eID}.json`,
         {
           name: this.state.eName,
           height: this.state.eHeight,
@@ -35,16 +34,19 @@ class Editor extends Component {
       .then(response => {
         console.log('POST response: ', response);
         Alert.alert('Changes succesfuly saved');
+        Actions.search();
       })
       .catch(error => {
         if (error.response) {
           console.log('R Data: ', error.response.data);
-          console.log('R Status: ', error.response.status);
           console.log('R Headers: ', error.response.headers);
+          Alert.alert('Try again');
         } else if (error.request) {
           console.log('R request: ', error.request);
+          Alert.alert('Try again');
         } else {
           console.log('Error message: ', error.message);
+          Alert.alert('Try again');
         }
         console.log(error.config);
       });
@@ -62,15 +64,15 @@ class Editor extends Component {
         <Text style={textStyle}>{this.props.eID}. Name</Text>
         <TextInput
           style={containerStyle}
-          onChangeText={(eName) => this.setState({ eName })}
+          onChangeText={eName => this.setState({ eName })}
           value={this.state.eName}
-
         />
         <Text style={textStyle}>Date</Text>
         <Button
           style={{ color: 'blue' }}
           buttonAction={async () => {
             try {
+              // eslint-disable-next-line prefer-const
               let { action, year, month, day } = await DatePickerAndroid.open({
                 mode: 'calendar',
                 date: new Date()
@@ -82,7 +84,7 @@ class Editor extends Component {
                   setMonth: month.toString(),
                   setDay: day.toString(),
                   setYear: year.toString(),
-                  eDate: year + '-' + month + '-' + day
+                  eDate: `${year}-${month}-${day}`
                 });
               }
             } catch ({ code, message }) {

@@ -1,34 +1,35 @@
 /* eslint-disable arrow-body-style */
 import React, { Component } from 'react';
-import { View, Button } from 'react-native';
+import { View } from 'react-native';
 import axios from 'axios';
-//import firebase from 'firebase';
 import Note from './Note';
 
 class List extends Component {
-  state = { 
-    notes: [],
+  state = {
+    notes: []
   };
 
-    componentWillMount() {
-    axios
-      .get('https://logowaniegfp.firebaseio.com/results.json')
-      .then(response => 
-        this.setState({ notes: response.data }))
-        .catch(error => {
-          if (error.response) {
-            console.log('R Data: ', error.response.data);
-            console.log('R Status: ', error.response.status);
-            console.log('R Headers: ', error.response.headers);
-          } else if (error.request) {
-            console.log('R request: ', error.request);
-          } else {
-            console.log('Error message: ', error.message);
-          }
-          console.log(error.config);
-        });
+  componentWillMount() {
+    this.getData();
+    console.log('Will mount');
   }
 
+  getData() {
+    axios
+      .get('https://logowaniegfp.firebaseio.com/results.json')
+      .then(response => this.setState({ notes: response.data }))
+      .catch(error => {
+        if (error.response) {
+          console.log('R Data: ', error.response.data);
+          console.log('R Headers: ', error.response.headers);
+        } else if (error.request) {
+          console.log('R request: ', error.request);
+        } else {
+          console.log('Error message: ', error.message);
+        }
+        console.log(error.config);
+      });
+  }
 
   renderNotes(value) {
     return this.state.notes.map(note => {
@@ -45,19 +46,16 @@ class List extends Component {
             eDate={note.edited}
             eHeight={note.height}
             eEyeColor={note.eye_color}
-          />    
-          );    
+            jsonData={this.state.notes}
+          />
+        );
       }
       return null;
     });
   }
 
   render() {
-    return (
-      <View>
-    {this.renderNotes(this.props.text)}
-    </View>
-    );
+    return <View>{this.renderNotes(this.props.text)}</View>;
   }
 }
 
