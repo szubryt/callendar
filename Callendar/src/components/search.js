@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { TextInput } from 'react-native';
 
 class Search extends Component {
-
   render() {
     const { searchStyle } = styles;
     const { textStyle } = styles;

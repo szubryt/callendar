@@ -5,12 +5,30 @@ import axios from 'axios';
 import Note from './Note';
 
 class List extends Component {
-  state = { notes: [] };
-    componentWillMount() {
+  state = {
+    notes: []
+  };
+
+  componentWillMount() {
+    this.getData();
+    console.log('Will mount');
+  }
+
+  getData() {
     axios
-      .get('http://localhost:8081/people.json')
-      .then(response => 
-        this.setState({ notes: response.data.results }));
+      .get('https://logowaniegfp.firebaseio.com/results.json')
+      .then(response => this.setState({ notes: response.data }))
+      .catch(error => {
+        if (error.response) {
+          console.log('R Data: ', error.response.data);
+          console.log('R Headers: ', error.response.headers);
+        } else if (error.request) {
+          console.log('R request: ', error.request);
+        } else {
+          console.log('Error message: ', error.message);
+        }
+        console.log(error.config);
+      });
   }
 
   renderNotes(value) {
@@ -19,26 +37,24 @@ class List extends Component {
       let noteName = note.name;
       noteName = noteName.toLowerCase();
       if (noteName.includes(sample)) {
-        //console.log(this.state.notes.indexOf(note));
         return (
           <Note
             noteID={this.state.notes.indexOf(note)}
-            key={note.name}
+            key={this.state.notes.indexOf(note)}
             note={note}
             title={note.name}
             eDate={note.edited}
             eHeight={note.height}
             eEyeColor={note.eye_color}
-
-          />     
-          );    
+            jsonData={this.state.notes}
+          />
+        );
       }
       return null;
     });
   }
 
   render() {
-    //console.log('state.notes: ', this.state.notes);
     return <View>{this.renderNotes(this.props.text)}</View>;
   }
 }
