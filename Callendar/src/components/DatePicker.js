@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Calendar } from 'react-native-calendars';
-import { View } from 'react-native';
+import { Agenda } from 'react-native-calendars';
+import { View, Text, StyleSheet } from 'react-native';
 
 class DatePicker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: {}
+    };
+  }
+
   state = {
     notes: []
   };
@@ -26,14 +33,112 @@ class DatePicker extends Component {
       });
   }
 
-  render() {
+  markDates() {
     return (
-      <View>
-        <Calendar />
-        {console.log(this.state.notes)}
+      this.state.notes.map(
+        note => {
+        this.state.items[note.edited] = 
+            [{
+              name: note.name,
+              date: note.edited,
+              eye: note.eye_color
+            }];
+            return this.state.items;
+          }
+      )
+    );
+  }
+  loadItems(day) {
+    setTimeout(() => {
+      for (let i = -15; i < 85; i++) {
+        // eslint-disable-next-line no-mixed-operators
+        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const strTime = this.timeToString(time);
+        if (!this.state.items[strTime]) {
+          this.state.items[strTime] = [];
+          console.log(this.state.items);
+          this.markDates();
+        }
+      }
+      const newItems = {};
+      Object.keys(this.state.items).forEach(key => { newItems[key] = this.state.items[key]; });
+      this.setState({
+        items: newItems
+      });
+    }, 1000);
+  }
+
+  timeToString(time) {
+    const date = new Date(time);
+    return date.toISOString().split('T')[0];
+  }
+
+  rowHasChanged(r1, r2) {
+    return r1.name !== r2.name;
+  }
+
+  renderEmptyDate() {
+    return (
+      <View style={styles.emptyDate}>
+      <View
+  style={{
+
+    borderBottomColor: 'grey',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    width: '95%'
+  }}
+      />
       </View>
     );
   }
+
+  renderItem(item) {
+    return (
+      <View style={[styles.item, { height: item.height }]}><Text>{item.name}</Text></View>
+    );
+  }
+
+  render() {
+    return (
+      <Agenda
+        items={this.state.items}
+        loadItemsForMonth={this.loadItems.bind(this)}
+        onCalendarToggled={calendarOpened => {
+          console.log(calendarOpened);
+        }}
+        onDayPress={day => {
+          console.log('day pressed', day);
+        }}
+        onDayChange={day => {
+          console.log('day changed', day);
+        }}
+        pastScrollRange={50}
+        futureScrollRange={50}
+        renderEmptyDate={this.renderEmptyDate.bind(this)}
+        rowHasChanged={this.rowHasChanged.bind(this)}
+        renderItem={this.renderItem.bind(this)}
+        style={{
+          height: '100%'
+        }}
+      />
+    );
+  }
 }
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17
+  },
+  emptyDate: {
+    height: 15,
+    flex: 1,
+    paddingTop: 30
+  }
+});
 
 export default DatePicker;
