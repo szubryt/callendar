@@ -18,10 +18,6 @@ class Search extends Component {
   }
 }
 
-/*
-        STYLES
-*/
-
 const styles = {
   textStyle: {
     textAlign: 'center',

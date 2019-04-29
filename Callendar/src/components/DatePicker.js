@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Agenda } from 'react-native-calendars';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, StyleSheet } from 'react-native';
+import { blue } from 'ansi-colors';
 
 class DatePicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: {}
+      items: {},
+      notes: []
     };
   }
 
-  state = {
-    notes: []
-  };
-
-  componentWillMount() {
+    componentDidMount() {
     axios
       .get('https://logowaniegfp.firebaseio.com/results.json')
-      .then(response => this.setState({ notes: response.data }))
+      .then(response => {
+        this.setState({ notes: response.data });
+        this.markDates();
+      })
       .catch(error => {
         if (error.response) {
           console.log('R Data: ', error.response.data);
@@ -29,22 +30,31 @@ class DatePicker extends Component {
         } else {
           console.log('Error message: ', error.message);
         }
+      //
         console.log(error.config);
       });
-  }
+    }
 
-  markDates() {
+    markDates() {
     return (
       this.state.notes.map(
         note => {
-        this.state.items[note.edited] = 
+          if (!this.state.items[note.edited]) {
+            this.state.items[note.edited] = 
             [{
               name: note.name,
               date: note.edited,
               eye: note.eye_color
             }];
+          } else {
+            this.state.items[note.edited].push({
+            name: note.name,
+            date: note.edited,
+            eye: note.eye_color
+          });
+        }
             return this.state.items;
-          }
+          }       
       )
     );
   }
@@ -56,8 +66,6 @@ class DatePicker extends Component {
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
-          console.log(this.state.items);
-          this.markDates();
         }
       }
       const newItems = {};
@@ -65,8 +73,9 @@ class DatePicker extends Component {
       this.setState({
         items: newItems
       });
-    }, 1000);
-  }
+      }, 1000);      
+      this.setState(this.state);
+    }
 
   timeToString(time) {
     const date = new Date(time);
@@ -82,7 +91,6 @@ class DatePicker extends Component {
       <View style={styles.emptyDate}>
       <View
   style={{
-
     borderBottomColor: 'grey',
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: '95%'
@@ -99,7 +107,7 @@ class DatePicker extends Component {
   }
 
   render() {
-    return (
+      return (
       <Agenda
         items={this.state.items}
         loadItemsForMonth={this.loadItems.bind(this)}
@@ -137,7 +145,7 @@ const styles = StyleSheet.create({
   emptyDate: {
     height: 15,
     flex: 1,
-    paddingTop: 30
+    paddingTop: 30,
   }
 });
 

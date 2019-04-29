@@ -11,7 +11,6 @@ class List extends Component {
 
   componentWillMount() {
     this.getData();
-    console.log('Will mount');
   }
 
   getData() {

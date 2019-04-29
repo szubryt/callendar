@@ -14,9 +14,10 @@ const RouterComponent = () => {
           component={ScreenCalendar}
           title='Calendar'
           initial
+          hideNavBar
         />
-        <Scene key='search' component={ScreenSearch} title='Search notes' />
-        <Scene key='editor' component={Editor} title='Edit note' />
+        <Scene key='search' hideNavBar component={ScreenSearch} title='Search notes' />
+        <Scene key='editor' hideNavBar component={Editor} title='Edit note' />
       </Scene>
     </Router>
   );
